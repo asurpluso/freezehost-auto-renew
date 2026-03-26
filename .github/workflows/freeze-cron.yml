@@ -46,3 +46,21 @@ jobs:
           TG_BOT:           ${{ secrets.TG_BOT }}
           GOST_PROXY:       http://127.0.0.1:8080
         run: npx playwright test tests/freeze.spec.js
+
+  
+      - name: ⏱️ 提交执行时间到公开库
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p freezehost && echo "$(date +'%Y-%m-%d %H:%M:%S')" > freezehost/time.txt
+          git add freezehost/time.txt 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "无变化，无需提交"
+          else
+            TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
+            git commit -m "⏱️ 更新 freezehost 执行时间: $TIMESTAMP"
+            git pull --rebase origin main  # 拉取远程更新
+            git push origin main
+            echo "✅ 更改已推送到公开库"
+          fi
