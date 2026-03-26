@@ -28,7 +28,7 @@ jobs:
         env:
           GOST_PROXY: ${{ secrets.GOST2_PROXY }}
         run: |
-          if [ -z "$GOST_PROXY" ]; then
+          if [ -z "$GOST2_PROXY" ]; then
             echo "⚠️ 未配置 GOST2_PROXY，跳过代理启动"
           else
             VERSION=$(curl -s https://api.github.com/repos/ginuerzh/gost/releases/latest | grep '"tag_name"' | cut -d'"' -f4 | tr -d 'v')
