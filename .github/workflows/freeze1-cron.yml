@@ -1,4 +1,4 @@
-name: 🎮 FreezeHost 自动续期
+name: 🎮 FreezeHost1 自动续期
 on:
   schedule:
     - cron: '50 2 * * *' # 每天 UTC 时间 2:10 (北京时间早上 10:50) 自动运行
