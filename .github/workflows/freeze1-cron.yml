@@ -24,20 +24,20 @@ jobs:
       - name: 🌐 安装 Playwright 浏览器
         run: npx playwright install chromium --with-deps
 
-      - name: 🛡️ 启动 GOST 代理转发
+      - name: 🛡️ 启动 GOST1 代理转发
         env:
           GOST_PROXY: ${{ secrets.GOST1_PROXY }}
         run: |
           if [ -z "$GOST_PROXY" ]; then
-            echo "⚠️ 未配置 GOST_PROXY，跳过代理启动"
+            echo "⚠️ 未配置 GOST1_PROXY，跳过代理启动"
           else
             VERSION=$(curl -s https://api.github.com/repos/ginuerzh/gost/releases/latest | grep '"tag_name"' | cut -d'"' -f4 | tr -d 'v')
             wget -q "https://github.com/ginuerzh/gost/releases/download/v${VERSION}/gost_${VERSION}_linux_amd64.tar.gz"
             tar -xzf "gost_${VERSION}_linux_amd64.tar.gz"
             chmod +x gost
-            nohup ./gost -L http://:8080 -F "$GOST_PROXY" > gost.log 2>&1 &
+            nohup ./gost -L http://:8080 -F "$GOST1_PROXY" > gost.log 2>&1 &
             sleep 5
-            echo "✅ GOST 代理已启动"
+            echo "✅ GOST1 代理已启动"
           fi
 
       - name: 🚀 运行多账号续期脚本
